@@ -1,0 +1,13 @@
+while(num_iter)// wolfe方向（Matlab）
+        if~(feval(func,x0+alpha*dk)<=func(x0)+rho*alpha*feval(gfunc,x0)'*dk)
+            b=alpha;
+            alpha=(alpha+a)/2;
+            continue;
+        end
+        if~(feval(gfunc,x0+alpha*dk)'*dk>=sigma*feval(gfunc,x0)'*dk)
+            a=alpha;
+            alpha=min([2*alpha,(b+alpha)/2]);
+            continue;
+        end
+        break;
+    end

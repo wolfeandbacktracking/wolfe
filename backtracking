@@ -1,0 +1,12 @@
+//回溯法(Matlab)
+alpha_k=10;//该参数可调（初始alpha_k应该较大）
+p=0.5;
+epa=10-6;
+while(alpha>epa)
+	if~(feval(func,x0+alpha*dk)<=func(x0)+rho*alpha*feval(gfunc,x0)'*dk)
+            alpha=alpha_k;
+    end
+    else
+     		alpha=alpha*p;
+    end
+end

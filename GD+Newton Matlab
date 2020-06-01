@@ -1,0 +1,39 @@
+function [x1] = min_hybrid(func, dfunc, d2func ,x, MAX_IT ,eps, threshold)
+    err = 10.0;
+    steps = 0;
+    alpha = 1.0;
+    //最速下降法
+    while (err > threshold)//此处阈值需要调参
+        f = func(x);
+        g = dfunc(x);
+        p = -g;
+        step=step+1;
+        alpha = backtracking(@func, x, f, g, p, 1e-4, 0.8, alpha * 2.0);
+        x = x + alpha * p;
+        if (steps > MAX_IT)
+            break;
+        end
+        error = norm(g);
+    end
+    //牛顿法
+    while (error > eps)
+        f = func(x);
+        g = dfunc(x);
+        G = d2func(x);
+        p = -G\g;
+        x = x + p;
+        step=step+1;
+        if (steps > MAX_IT)
+            break;
+        end
+        error = norm(g);
+    end
+	x1=x;
+end
+
+function alpha = backtracking(func, x, f, df, p, c, rho, alpha0)
+    alpha = alpha0;
+    while (func(x(1) + alpha * p(1), x(2) + alpha * p(2)) > f + c * alpha * df' * p)
+        alpha = alpha * rho;
+    end
+end

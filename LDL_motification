@@ -1,0 +1,26 @@
+function[L,D]=modification(A,delta,beta)
+	if(norm(A-A')>eps
+		return;
+	end
+	n=size(A,1);
+	d=zero(n,1);
+	L=zero(n);
+	C=zero(n);
+	theta=zeros(n,1);
+	for j = 1:n
+		C(j,j) = A(j,j)-sum(d(1:j-1)'.*L(j,1:j-1).^2);
+		for i = j+1:n
+			C(i,j) = A(i,j)-sum(d(1:j-1)'.*L(i,1:j-1).*L(j,1:j-1));
+			absjj=abs(C(i,j));
+			if theta < abs(C(i,j))
+				theta = abs(C(i,j));
+			end
+		end
+		d(j) = max([abs(C(j,j)), (theta/beta)^2, \delta]);
+		for i = j+1:n
+			L(i,j) = C(i,j)/d(j);
+		end
+		L(j,j) = 1.0;
+	end
+	D=diag(d);
+end
